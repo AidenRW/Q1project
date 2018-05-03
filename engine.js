@@ -133,27 +133,26 @@ function component(width, height, color, x, y, type) {
       crash = false;
     }
     if (crash === true){
-      side = 0;
       var topcollision = otherbottom - this.y;
       var bottomcollision = mybottom - otherobj.y;
       var leftcollision = myright - otherobj.x;
       var rightcollision = otherright - this.x;
       if (topcollision < bottomcollision && topcollision < leftcollision && topcollision < rightcollision){
-        //console.log("top");
-        side = 1;
-      }
+        console.log("top");
+        top = true;
+      }else{top = false;}
       if (bottomcollision < topcollision && bottomcollision < leftcollision && bottomcollision < rightcollision){
         //console.log("bottom");
-        side = 2;
-      }
+        bottom = true;
+      }else{bottom = false;}
       if (leftcollision < bottomcollision && leftcollision < topcollision && leftcollision < rightcollision){
         //console.log("right");
-        side = 3;
-      }
+        right = true;
+      }else{right = false;}
       if (rightcollision < bottomcollision && rightcollision < leftcollision && rightcollision < topcollision){
         //console.log("left");
-        side = 4;
-      }
+        left = true;
+      }else{left = false;}
     }
     return crash;
   }
@@ -164,18 +163,20 @@ var wait = 2;
 var jumpHold = 0;
 var impact = false;
 var ground = false;
-var side = 0;
-var left = 0;
-var right = 0;
+var top = false;
+var bottom = false;
+var left = false;
+var right = false;
 
 function updateGameArea() {
   for (var i = 0; i < Bounds.length; i++) {
     if (myGamePiece.collide(Bounds[i])) {
+      if (bottom){
       origin.gravitySpeed = 0;
       origin.gravity = 0;
       jumpHold = 0;
       ground = true;
-
+      }
     }
   }
   if (ground === false) {
@@ -186,11 +187,15 @@ function updateGameArea() {
   myGameArea.clear();
   origin.speedX = 0;
   origin.speedY = jumpSpeed;
-  if (myGameArea.keys && myGameArea.keys[37] && side !== 4) {
+  if (myGameArea.keys && myGameArea.keys[37]) {
+    if (left === false){
     origin.speedX = -1;
+    }
   }
   if (myGameArea.keys && myGameArea.keys[39]) {
+    if (right === false){
     origin.speedX = 1;
+    }
   }
   if (myGameArea.keys && myGameArea.keys[38]) {
     jumpHold++;
