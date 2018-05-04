@@ -1,55 +1,28 @@
 var myGamePiece;
 var myBackground;
+//var myForground;
+var gornd;
 var Bounds = [];
 var origin;
+var idleAnimation = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png"];
 
 function startGame() {
   origin = new component(1, 1, "", 0, 1000, "image");
-  myGamePiece = new component(7, 15, "samus.png", 45, 180, "image");
-  myBackground = new component(677, 872, "clocktower.png", 0, 0, "background");
+  myGamePiece = new component(50, 62, "1.png", 45, 180, "image");
+  myBackground = new component(640, 480, "fdbackgorund.png", 0, 0, "background");
+  //myForground = new component(640, 480, "samus.png", 0, 0, "image");
+  gornd = new component(640, 480, "MeleeBattlefield.png", 0, 0, "image");
 
 
-  Bounds[0] = myBound0 = new component(262, 2, "red", 40, 200);
-  Bounds[1] = myBound1 = new component(2, 70, "red", 300, 200);
-  Bounds[2] = myBound2 = new component(162, 2, "red", 40, 175);
-  Bounds[3] = myBound3 = new component(2, 11, "red", 200, 175);
-  Bounds[4] = myBound4 = new component(23, 2, "red", 200, 184);
-  Bounds[5] = myBound5 = new component(2, 19, "red", 221, 167);
-  Bounds[6] = myBound6 = new component(18, 2, "red", 221, 167);
-  Bounds[7] = myBound7 = new component(2, 12, "red", 237, 157);
-  Bounds[8] = myBound8 = new component(24, 2, "red", 215, 157);
-  Bounds[9] = myBound9 = new component(109, 2, "red", 258, 157);
-  Bounds[10] = myBound10 = new component(2, 12, "red", 258, 157);
-  Bounds[11] = myBound11 = new component(24, 2, "red", 258, 167);
-  Bounds[12] = myBound12 = new component(2, 19, "red", 280, 167);
-  Bounds[13] = myBound13 = new component(22, 2, "red", 280, 184);
-  Bounds[14] = myBound14 = new component(2, 19, "red", 300, 167);
-  Bounds[15] = myBound15 = new component(67, 2, "red", 300, 167);
-  Bounds[16] = myBound16 = new component(2, 24, "red", 365, 167);
-  Bounds[17] = myBound17 = new component(13, 2, "red", 354, 189);
-  Bounds[18] = myBound18 = new component(2, 34, "red", 354, 189);
-  Bounds[19] = myBound19 = new component(8, 2, "red", 354, 221);
-  Bounds[20] = myBound20 = new component(2, 24, "red", 360, 221);
-  Bounds[21] = myBound21 = new component(8, 2, "red", 354, 243);
-  Bounds[22] = myBound22 = new component(2, 34, "red", 354, 243);
-  Bounds[23] = myBound23 = new component(12, 2, "red", 354, 275);
-  Bounds[24] = myBound24 = new component(2, 23, "red", 364, 275);
-  Bounds[25] = myBound25 = new component(17, 2, "red", 349, 296);
-  Bounds[26] = myBound26 = new component(2, 13, "red", 349, 285);
-  Bounds[27] = myBound27 = new component(13, 2, "red", 338, 285);
-  Bounds[28] = myBound28 = new component(2, 13, "red", 338, 285);
-  Bounds[29] = myBound29 = new component(28, 2, "red", 312, 296);
-  Bounds[30] = myBound30 = new component(2, 13, "red", 312, 285);
-  Bounds[31] = myBound31 = new component(45, 2, "red", 269, 285);
-  Bounds[32] = myBound32 = new component(28, 2, "red", 274, 268);
-  Bounds[33] = myBound33 = new component(2, 45, "red", 215, 114);
 
+  Bounds[0] = myBound0 = new component(593, 2, "red", 20, 303, "wall");
+  Bounds[4] = myBound4 = new component(2, 100, "red", 62, 94, "wall");
+  Bounds[5] = myBound5 = new component(2, 100, "red", 220, 94, "wall");
+  Bounds[6] = myBound6 = new component(158, 2, "red", 62, 94, "wall");
 
-  Bounds[34] = myBound34 = new component(25, 1, "lightgreen", 313, 285);
-  Bounds[35] = myBound35 = new component(10, 1, "lightgreen", 301, 211);
-  Bounds[36] = myBound36 = new component(10, 1, "lightgreen", 243, 189);
-  Bounds[37] = myBound37 = new component(22, 1, "lightgreen", 237, 173);
-
+  Bounds[1] = myBound1 = new component(158, 2, "lightgreen", 62, 194, "passablewall");
+  Bounds[2] = myBound2 = new component(158, 2, "lightgreen", 412, 194, "passablewall");
+  Bounds[3] = myBound3 = new component(166, 2, "lightgreen", 233, 80, "passablewall");
 
 
 
@@ -64,8 +37,8 @@ function startGame() {
 var myGameArea = {
   canvas: document.createElement("canvas"),
   start: function() {
-    this.canvas.width = 677;
-    this.canvas.height = 872;
+    this.canvas.width = 640;
+    this.canvas.height = 480;
     this.context = this.canvas.getContext("2d");
     document.body.prepend(this.canvas, document.body.childNodes[0]);
     this.interval = setInterval(updateGameArea, 16.67);
@@ -115,9 +88,18 @@ function component(width, height, color, x, y, type) {
     }
   }
   this.newPos = function() {
-    this.gravitySpeed += origin.gravity;
-    this.x += origin.speedX;
-    this.y += origin.speedY + origin.gravitySpeed;
+    if (this.type === "background") {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < -(this.width)) {
+        this.x = 0;
+      }
+
+    } else {
+      this.gravitySpeed += origin.gravity;
+      this.x += origin.speedX;
+      this.y += origin.speedY + origin.gravitySpeed;
+    }
   }
   this.collide = function(otherobj) {
     var myleft = this.x;
@@ -132,35 +114,35 @@ function component(width, height, color, x, y, type) {
     if ((mybottom <= othertop) || (mytop >= otherbottom) || (myright <= otherleft) || (myleft >= otherright)) {
       crash = false;
     }
-    if (crash === true){
+    if (crash === true) {
       var topcollision = otherbottom - this.y;
       var bottomcollision = mybottom - otherobj.y;
       var leftcollision = myright - otherobj.x;
       var rightcollision = otherright - this.x;
-      if (collisions[4] === false){
-      collisions[0] = false;
-      collisions[1] = false;
-      collisions[2] = false;
-      collisions[3] = false;
+      if (collisions[4] === false) {
+        collisions[0] = false;
+        collisions[1] = false;
+        collisions[2] = false;
+        collisions[3] = false;
       }
-      if (topcollision < bottomcollision && topcollision < leftcollision && topcollision < rightcollision){
-        collisions[0] = true;
-        collisions[4] = true;
-
+      if (otherobj.type === "wall") {
+        if (topcollision < bottomcollision && topcollision < leftcollision && topcollision < rightcollision) {
+          collisions[0] = true;
+          collisions[4] = true;
+        }
+        if (rightcollision < bottomcollision && rightcollision < leftcollision && rightcollision < topcollision) {
+          collisions[1] = true;
+          collisions[4] = true;
+        }
+        if (leftcollision < bottomcollision && leftcollision < topcollision && leftcollision < rightcollision) {
+          collisions[3] = true;
+          collisions[4] = true;
+        }
       }
-      if (rightcollision < bottomcollision && rightcollision < leftcollision && rightcollision < topcollision){
-        collisions[1] = true;
-        collisions[4] = true;
-      }
-      if (bottomcollision < topcollision && bottomcollision < leftcollision && bottomcollision < rightcollision){
-        collisions[2] = true;
-        collisions[4] = true;
-      }
-      if (leftcollision < bottomcollision && leftcollision < topcollision && leftcollision < rightcollision){
-        collisions[3] = true;
-        collisions[4] = true;
-      }
-
+    }
+    if (bottomcollision < topcollision && bottomcollision < leftcollision && bottomcollision < rightcollision) {
+      collisions[2] = true;
+      collisions[4] = true;
     }
     return crash;
   }
@@ -171,39 +153,50 @@ var wait = 2;
 var jumpHold = 0;
 var impact = false;
 var ground = false;
-var collisions = [false,false,false,false,false];
+var animationFrame = 0;
+var collisions = [false, false, false, false, false];
+var animationWait = 0;
 
 function updateGameArea() {
+  if (animationWait === 0){
+  myGamePiece.image.src = idleAnimation[animationFrame];
+  animationFrame ++;
+  animationWait = 5;
+  if (animationFrame === 10){
+    animationFrame = 0;
+  }
+}else{animationWait --}
   for (var i = 0; i < Bounds.length; i++) {
     if (myGamePiece.collide(Bounds[i])) {
-      if (collisions[2]){
-      origin.gravitySpeed = 0;
-      origin.gravity = 0;
-      jumpHold = 0;
-      ground = true;
+      if (collisions[2]) {
+        origin.gravitySpeed = 0;
+        origin.gravity = 0;
+        jumpHold = 0;
+        ground = true;
       }
     }
   }
   collisions[4] = false;
   if (ground === false) {
-    origin.gravity = 0.05;
+    origin.gravity = 0.1;
   }
   ground = false;
   jump();
-  if (collisions[0]){
+  if (collisions[0]) {
     jumpSpeed = 0;
   }
   myGameArea.clear();
+  myBackground.speedX = -3;
   origin.speedX = 0;
   origin.speedY = jumpSpeed;
   if (myGameArea.keys && myGameArea.keys[37]) {
-    if (collisions[1] === false){
-    origin.speedX = -1;
+    if (collisions[1] === false) {
+      origin.speedX = -3;
     }
   }
   if (myGameArea.keys && myGameArea.keys[39]) {
-    if (collisions[3] === false){
-    origin.speedX = 1;
+    if (collisions[3] === false) {
+      origin.speedX = 3;
     }
   }
   if (myGameArea.keys && myGameArea.keys[38]) {
@@ -216,8 +209,10 @@ function updateGameArea() {
   }
   origin.newPos();
   origin.update();
-  // myBackground.newPos();
+  myBackground.newPos();
   myBackground.update();
+  //myForground.update();
+  gornd.update();
   myGamePiece.newPos();
   myGamePiece.update();
   for (var i = 0; i < Bounds.length; i++) {
@@ -230,12 +225,12 @@ function updateGameArea() {
 function jump(x) {
   if (jumpHold < 20) {
     if (x <= 0) {
-      jumpSpeed = x / 8;
+      jumpSpeed = x / 2;
     }
   }
   if (wait === 0) {
     if (jumpSpeed < 0) {
-      jumpSpeed += 1 / 8;
+      jumpSpeed += 1 / 2;
       wait = 2;
     }
   } else {
