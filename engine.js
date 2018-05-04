@@ -4,45 +4,45 @@ var Bounds = [];
 var origin;
 
 function startGame() {
-  origin = new component(1, 1, "samus4.png", 0, 1000, "image");
+  origin = new component(1, 1, "", 0, 1000, "image");
   myGamePiece = new component(7, 15, "samus.png", 45, 180, "image");
   myBackground = new component(677, 872, "clocktower.png", 0, 0, "background");
 
 
-  Bounds[0] = myBound0 = new component(260, 1, "red", 40, 200);
-  Bounds[1] = myBound1 = new component(1, 70, "red", 300, 200);
-  Bounds[2] = myBound2 = new component(160, 1, "red", 40, 175);
-  Bounds[3] = myBound3 = new component(1, 9, "red", 200, 175);
-  Bounds[4] = myBound4 = new component(21, 1, "red", 200, 184);
-  Bounds[5] = myBound5 = new component(1, 17, "red", 221, 167);
-  Bounds[6] = myBound6 = new component(16, 1, "red", 221, 167);
-  Bounds[7] = myBound7 = new component(1, 10, "red", 237, 157);
-  Bounds[8] = myBound8 = new component(22, 1, "red", 215, 157);
-  Bounds[9] = myBound9 = new component(107, 1, "red", 258, 157);
-  Bounds[10] = myBound10 = new component(1, 10, "red", 258, 157);
-  Bounds[11] = myBound11 = new component(22, 1, "red", 258, 167);
-  Bounds[12] = myBound12 = new component(1, 17, "red", 280, 167);
-  Bounds[13] = myBound13 = new component(20, 1, "red", 280, 184);
-  Bounds[14] = myBound14 = new component(1, 17, "red", 300, 167);
-  Bounds[15] = myBound15 = new component(65, 1, "red", 300, 167);
-  Bounds[16] = myBound16 = new component(1, 22, "red", 365, 167);
-  Bounds[17] = myBound17 = new component(11, 1, "red", 354, 189);
-  Bounds[18] = myBound18 = new component(1, 32, "red", 354, 189);
-  Bounds[19] = myBound19 = new component(6, 1, "red", 354, 221);
-  Bounds[20] = myBound20 = new component(1, 22, "red", 360, 221);
-  Bounds[21] = myBound21 = new component(6, 1, "red", 354, 243);
-  Bounds[22] = myBound22 = new component(1, 32, "red", 354, 243);
-  Bounds[23] = myBound23 = new component(10, 1, "red", 354, 275);
-  Bounds[24] = myBound24 = new component(1, 21, "red", 364, 275);
-  Bounds[25] = myBound25 = new component(15, 1, "red", 349, 296);
-  Bounds[26] = myBound26 = new component(1, 11, "red", 349, 285);
-  Bounds[27] = myBound27 = new component(11, 1, "red", 338, 285);
-  Bounds[28] = myBound28 = new component(1, 11, "red", 338, 285);
-  Bounds[29] = myBound29 = new component(26, 1, "red", 312, 296);
-  Bounds[30] = myBound30 = new component(1, 11, "red", 312, 285);
-  Bounds[31] = myBound31 = new component(43, 1, "red", 269, 285);
-  Bounds[32] = myBound32 = new component(26, 1, "red", 274, 270);
-  Bounds[33] = myBound33 = new component(1, 43, "red", 215, 114);
+  Bounds[0] = myBound0 = new component(262, 2, "red", 40, 200);
+  Bounds[1] = myBound1 = new component(2, 70, "red", 300, 200);
+  Bounds[2] = myBound2 = new component(162, 2, "red", 40, 175);
+  Bounds[3] = myBound3 = new component(2, 11, "red", 200, 175);
+  Bounds[4] = myBound4 = new component(23, 2, "red", 200, 184);
+  Bounds[5] = myBound5 = new component(2, 19, "red", 221, 167);
+  Bounds[6] = myBound6 = new component(18, 2, "red", 221, 167);
+  Bounds[7] = myBound7 = new component(2, 12, "red", 237, 157);
+  Bounds[8] = myBound8 = new component(24, 2, "red", 215, 157);
+  Bounds[9] = myBound9 = new component(109, 2, "red", 258, 157);
+  Bounds[10] = myBound10 = new component(2, 12, "red", 258, 157);
+  Bounds[11] = myBound11 = new component(24, 2, "red", 258, 167);
+  Bounds[12] = myBound12 = new component(2, 19, "red", 280, 167);
+  Bounds[13] = myBound13 = new component(22, 2, "red", 280, 184);
+  Bounds[14] = myBound14 = new component(2, 19, "red", 300, 167);
+  Bounds[15] = myBound15 = new component(67, 2, "red", 300, 167);
+  Bounds[16] = myBound16 = new component(2, 24, "red", 365, 167);
+  Bounds[17] = myBound17 = new component(13, 2, "red", 354, 189);
+  Bounds[18] = myBound18 = new component(2, 34, "red", 354, 189);
+  Bounds[19] = myBound19 = new component(8, 2, "red", 354, 221);
+  Bounds[20] = myBound20 = new component(2, 24, "red", 360, 221);
+  Bounds[21] = myBound21 = new component(8, 2, "red", 354, 243);
+  Bounds[22] = myBound22 = new component(2, 34, "red", 354, 243);
+  Bounds[23] = myBound23 = new component(12, 2, "red", 354, 275);
+  Bounds[24] = myBound24 = new component(2, 23, "red", 364, 275);
+  Bounds[25] = myBound25 = new component(17, 2, "red", 349, 296);
+  Bounds[26] = myBound26 = new component(2, 13, "red", 349, 285);
+  Bounds[27] = myBound27 = new component(13, 2, "red", 338, 285);
+  Bounds[28] = myBound28 = new component(2, 13, "red", 338, 285);
+  Bounds[29] = myBound29 = new component(28, 2, "red", 312, 296);
+  Bounds[30] = myBound30 = new component(2, 13, "red", 312, 285);
+  Bounds[31] = myBound31 = new component(45, 2, "red", 269, 285);
+  Bounds[32] = myBound32 = new component(28, 2, "red", 274, 268);
+  Bounds[33] = myBound33 = new component(2, 45, "red", 215, 114);
 
 
   Bounds[34] = myBound34 = new component(25, 1, "lightgreen", 313, 285);
@@ -137,22 +137,30 @@ function component(width, height, color, x, y, type) {
       var bottomcollision = mybottom - otherobj.y;
       var leftcollision = myright - otherobj.x;
       var rightcollision = otherright - this.x;
+      if (collisions[4] === false){
+      collisions[0] = false;
+      collisions[1] = false;
+      collisions[2] = false;
+      collisions[3] = false;
+      }
       if (topcollision < bottomcollision && topcollision < leftcollision && topcollision < rightcollision){
-        console.log("top");
-        top = true;
-      }else{top = false;}
-      if (bottomcollision < topcollision && bottomcollision < leftcollision && bottomcollision < rightcollision){
-        //console.log("bottom");
-        bottom = true;
-      }else{bottom = false;}
-      if (leftcollision < bottomcollision && leftcollision < topcollision && leftcollision < rightcollision){
-        //console.log("right");
-        right = true;
-      }else{right = false;}
+        collisions[0] = true;
+        collisions[4] = true;
+
+      }
       if (rightcollision < bottomcollision && rightcollision < leftcollision && rightcollision < topcollision){
-        //console.log("left");
-        left = true;
-      }else{left = false;}
+        collisions[1] = true;
+        collisions[4] = true;
+      }
+      if (bottomcollision < topcollision && bottomcollision < leftcollision && bottomcollision < rightcollision){
+        collisions[2] = true;
+        collisions[4] = true;
+      }
+      if (leftcollision < bottomcollision && leftcollision < topcollision && leftcollision < rightcollision){
+        collisions[3] = true;
+        collisions[4] = true;
+      }
+
     }
     return crash;
   }
@@ -163,15 +171,12 @@ var wait = 2;
 var jumpHold = 0;
 var impact = false;
 var ground = false;
-var top = false;
-var bottom = false;
-var left = false;
-var right = false;
+var collisions = [false,false,false,false,false];
 
 function updateGameArea() {
   for (var i = 0; i < Bounds.length; i++) {
     if (myGamePiece.collide(Bounds[i])) {
-      if (bottom){
+      if (collisions[2]){
       origin.gravitySpeed = 0;
       origin.gravity = 0;
       jumpHold = 0;
@@ -179,21 +184,25 @@ function updateGameArea() {
       }
     }
   }
+  collisions[4] = false;
   if (ground === false) {
     origin.gravity = 0.05;
   }
   ground = false;
   jump();
+  if (collisions[0]){
+    jumpSpeed = 0;
+  }
   myGameArea.clear();
   origin.speedX = 0;
   origin.speedY = jumpSpeed;
   if (myGameArea.keys && myGameArea.keys[37]) {
-    if (left === false){
+    if (collisions[1] === false){
     origin.speedX = -1;
     }
   }
   if (myGameArea.keys && myGameArea.keys[39]) {
-    if (right === false){
+    if (collisions[3] === false){
     origin.speedX = 1;
     }
   }
