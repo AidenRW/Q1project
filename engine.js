@@ -22,7 +22,7 @@ var origin;
 function startGame() {
 //<!-- Game objects (width, height, src, x, y, type, spriteRows, spriteCols) -->
   origin = new component(1, 1, "", 0, 1000, "image");
-  myCharacter = new component(392, 274, "chunLiSpriteSheet.png", 275, 180, "character",11, 12);
+  myCharacter = new component(392, 274, "finalSpriteSheet.png", 275, 180, "character",22, 12);
   myCharacterHurtbox = new component(83, 101, "transparent", 275, 180, "hurtBox");
   myBackground = new component(640, 480, "fdbackgorund.png", 0, 0, "background");
   //myForground = new component(640, 480, "samus.png", 0, 0, "image");
@@ -231,8 +231,8 @@ function updateGameArea() {
             animationColl = 5;
           } else {
             idleFrame = 0;
-            animationRow = 4;
-            animationColl = 6;
+            animationRow = 15;
+            animationColl = 1;
           }
         }
         origin.gravitySpeed = 0;
@@ -266,7 +266,6 @@ function updateGameArea() {
     //direction = 2;
     if (animationRunning === false){
     lookingRight = false;
-    myCharacter.image.src = "chunLiSpriteSheet2.png";
     }
 //<!-- Left Wall Collision -->
     if (collisions[1] === false) {
@@ -279,8 +278,8 @@ function updateGameArea() {
   if (myGameArea.keys && myGameArea.keys[39]) {
     //direction = 3;
     if (animationRunning === false){
+    
     lookingRight = true;
-    myCharacter.image.src = "chunLiSpriteSheet.png";
     }
 //<!-- Right Wall Collision -->
     if (collisions[3] === false) {
@@ -296,8 +295,8 @@ function updateGameArea() {
         animationRow = 5;
         animationColl = 3;
         } else{
-        animationRow = 5;
-        animationColl = 8;
+        animationRow = 15;
+        animationColl = 11;
         }
       jumpHold++;
       direction = 4;
@@ -323,18 +322,14 @@ function updateGameArea() {
     }
   }else {
     if (ground === true){
-    animationRow = 0;
-    animationColl = 11;
+    animationRow = 10;
+    animationColl = 8;
     } else{
-    animationRow = 7;
-    animationColl = 0;
+    animationRow = 18;
+    animationColl = 7;
   }
   }
   }
-  }
-  if (myGameArea.keys && myGameArea.keys[90]) {
-    ctx.scale(-1);
-    console.log("flip");
   }
 
 //<!-- Idel Animation -->
@@ -447,19 +442,19 @@ function updateGameArea() {
     if (direction === 0 && ground === true) {
       myCharacter.currentRow = animationRow;
       myCharacter.currentColl = animationColl;
-      myCharacter.x = -35;
+      myCharacter.x = 275;
       myCharacter.y = 180;
-      animationColl--;
-      if (animationColl === -1){
+      animationColl++;
+      if (animationColl === 12){
         animationRow++;
-        animationColl = 11;
+        animationColl = 0;
       }
       idleFrame++;
       animationWait = 1;
       if (idleFrame === 10) {
         idleFrame = 0;
-        animationRow = 4;
-        animationColl = 6;
+        animationRow = 15;
+        animationColl = 1;
       }
 //<!-- Axe Kick Animation -->
     }
@@ -470,30 +465,30 @@ function updateGameArea() {
       myCharacter.currentColl = animationColl;
       myCharacter.x = 41;
       myCharacter.y = 23;
-      animationColl--;
-      if (animationColl === -1){
+      animationColl++;
+      if (animationColl === 12){
         animationRow++;
-        animationColl = 11;
+        animationColl = 0;
       }
       walkingRightFrame++;
       animationWait = 1;
       if (walkingRightFrame === 53) {
         animationRunning = false;
         walkingRightFrame = 0;
-        animationRow = 4;
-        animationColl = 6;
+        animationRow = 15;
+        animationColl = 1;
         direction = 0;
       }
     } else {
       animation2Running = true;
       myCharacter.currentRow = animationRow;
       myCharacter.currentColl = animationColl;
-      myCharacter.x = 29;
+      myCharacter.x = 220;
       myCharacter.y = 126;
-      animationColl--;
-      if (animationColl === -1){
+      animationColl++;
+      if (animationColl === 12){
         animationRow++;
-        animationColl = 11;
+        animationColl = 0;
       }
       walkingRightFrame++;
       animationWait = 1;
@@ -501,8 +496,8 @@ function updateGameArea() {
         animation2Running = false;
         animationRunning = false;
         walkingRightFrame = 0;
-        animationRow = 4;
-        animationColl = 6;
+        animationRow = 15;
+        animationColl = 1;
         direction = 0;
       }
     }
@@ -520,28 +515,28 @@ function updateGameArea() {
       animation3Running = true;
       myCharacter.currentRow = animationRow;
       myCharacter.currentColl = animationColl;
-      myCharacter.x = -21;
+      myCharacter.x = 95;
       if (idleFrame < 27){
-        myCharacter.x = -21 + 6*idleFrame;
-      }else (myCharacter.x = -21 + 6*27)
+        myCharacter.x = 95 + 6*idleFrame;
+      }else (myCharacter.x = 95 + 6*27)
       myCharacter.y = 64;
-      animationColl--;
-      if (animationColl === -1){
+      animationColl++;
+      if (animationColl === 12){
         animationRow++;
-        animationColl = 11;
+        animationColl = 0;
       }
       idleFrame++;
       animationWait = 1;
       if (idleFrame === 26) {
         idleFrame = 0;
-        animationRow = 4;
-        animationColl = 6;
+        animationRow = 15;
+        animationColl = 1;
         direction = 0;
       }
     }else{
     idleFrame = 0;
-    animationRow = 4;
-    animationColl = 6;
+    animationRow = 15;
+    animationColl = 1;
     direction = 0;
     }
     }
