@@ -15,14 +15,16 @@ function startGame() {
   //myForground = new component(640, 480, "samus.png", 0, 0, "image");
   gornd = new component(640 * scale, 480 * scale, "MeleeBattlefield.png", 0, 0, "image");
   myEnemy = new component(400 / 6, 400 / 6, "Slime2.png", 62, 390, "character", 4, 4);
-  myCharacterHitbox = new component(0, 0, "lightgreen", 0, 0, "hitbox");
+  myEnemy2 = new component(400 / 6, 400 / 6, "Slime2.png", 750, 225, "character", 4, 4);
+  myEnemy3 = new component(400 / 6, 400 / 6, "Slime2.png", 440, 65, "character", 4, 4);
+  myCharacterHitbox = new component(0, 0, "transparent", 0, 0, "hitbox");
   //180, 180
   //<!-- Game Bounds -->
   //<!-- Non-Passable Game Bounds -->
   Bounds[0] = myBound0 = new component(593 * scale, 2 * scale, "transparent", 20 * scale, 303 * scale, "wall");
-  // Bounds[4] = myBound4 = new component(2*scale, 100*scale, "transparent", 62*scale, 94*scale, "wall");
-  // Bounds[5] = myBound5 = new component(2*scale, 100*scale, "transparent", 220*scale, 94*scale, "wall");
-  // Bounds[6] = myBound6 = new component(158*scale, 2*scale, "transparent", 62*scale, 94*scale, "wall");
+  // Bounds[4] = myBound4 = new component(2*scale, 100*scale, "red", 62*scale, 94*scale, "wall");
+  // Bounds[5] = myBound5 = new component(2*scale, 100*scale, "red", 220*scale, 94*scale, "wall");
+  // Bounds[6] = myBound6 = new component(158*scale, 2*scale, "red", 62*scale, 94*scale, "wall");
   //<!-- Only Stand Game Bounds -->
   Bounds[1] = myBound1 = new component(158 * scale, 2 * scale, "transparent", 62 * scale, 194 * scale, "passablewall");
   Bounds[2] = myBound2 = new component(158 * scale, 2 * scale, "transparent", 412 * scale, 194 * scale, "passablewall");
@@ -72,11 +74,15 @@ function component(width, height, color, x, y, type, spriteRows, spriteCols) {
     this.image = new Image();
     this.image.src = color;
   }
+  if (type == "character"){
+    this.isLookingRight = true;
+  }
   this.width = width;
   this.height = height;
   this.speedX = 0;
   this.speedY = 0;
   this.health = 10;
+  this.knockback = false;
   this.x = x;
   this.y = y;
   this.spriteRows = spriteRows;
@@ -186,6 +192,8 @@ var idleFrame = 0;
 var walkingRightFrame = 0;
 var walkingLeftFrame = 0;
 var enemyFrame = 0;
+var enemy2Frame = 0;
+var enemy3Frame = 0;
 var collisions = [false, false, false, false, false];
 var animationWait = 0;
 var EanimationWait = 0;
@@ -196,13 +204,16 @@ var animationRow = 5;
 var animationColl = 6;
 var EanimationRow = 0;
 var EanimationColl = 0;
+var E2animationRow = 0;
+var E2animationColl = 0;
+var E3animationRow = 0;
+var E3animationColl = 0;
 var animationRunning = false;
 var animation2Running = false;
 var animation3Running = false;
 var animation4Running = false;
 var keyHold = false;
 var hitGround = false;
-var enemyLookingRight = true;
 var crouching = false;
 
 function updateGameArea() {
@@ -248,7 +259,32 @@ function updateGameArea() {
   }
   if (myCharacterHitbox.collide(myEnemy)) {
     myEnemy.health--;
-    console.log(myEnemy.health)
+    console.log(myEnemy.health);
+    if(myEnemy.health < 0){
+      myEnemy.x = 0;
+      myEnemy.y = 0;
+      myEnemy.width = 0;
+      myEnemy.height = 0;
+    }
+  }
+  if (myCharacterHitbox.collide(myEnemy2)) {
+    myEnemy2.health--;
+    console.log(myEnemy2.health);
+    if(myEnemy2.health < 0){
+      myEnemy2.x = 0;
+      myEnemy2.y = 0;
+      myEnemy2.width = 0;
+      myEnemy2.height = 0;
+    }
+  }if (myCharacterHitbox.collide(myEnemy3)) {
+    myEnemy3.health--;
+    console.log(myEnemy3.health);
+    if(myEnemy3.health < 0){
+      myEnemy3.x = 0;
+      myEnemy3.y = 0;
+      myEnemy3.width = 0;
+      myEnemy3.height = 0;
+    }
   }
   myGameArea.clear();
   //<!-- Background Scroll Speed -->
@@ -257,6 +293,7 @@ function updateGameArea() {
   origin.speedY = -jumpSpeed;
   if (myGameArea.keys && myGameArea.keys[37]) {
     //direction = 2;
+    if (keyhold === false){
     if (animationRunning === false) {
       if (animation2Running === false && animation3Running === false){
       animationRow = 15;
@@ -268,20 +305,23 @@ function updateGameArea() {
       lookingRight = false;
       }
     }
+    }
     //<!-- Left Wall Collision -->
     if (collisions[1] === false) {
       if (animationRunning === false) {
         origin.speedX = 5;
       }
     }
-    keyHold = true;
+    keyhold = true;
   } else {
     keyhold = false;
   }
   if (myGameArea.keys && myGameArea.keys[39]) {
     //direction = 3;
+    if (keyhold === false){
     if (animationRunning === false) {
       if (animation2Running === false && animation3Running === false){
+
       animationRow = 4;
       animationColl = 5;
       myCharacter.currentRow = 4;
@@ -291,17 +331,19 @@ function updateGameArea() {
       lookingRight = true;
     }
     }
+    }
     //<!-- Right Wall Collision -->
     if (collisions[3] === false) {
       if (animationRunning === false) {
         origin.speedX = -5;
       }
     }
-    keyHold = true;
+    keyhold = true;
   } else {
     keyhold = false;
   }
   if (myGameArea.keys && myGameArea.keys[38]) {
+    if (jumpHold < 3){
     if (animationRunning === false) {
       if (lookingRight === true) {
         animationRow = 5;
@@ -312,7 +354,8 @@ function updateGameArea() {
       }
       jumpHold++;
       direction = 4;
-      jump(-10);
+      jump(-12);
+      }
     }
   }
   if (myGameArea.keys && myGameArea.keys[40]) {
@@ -377,6 +420,7 @@ function updateGameArea() {
     }
   }
   if (myGameArea.keys && myGameArea.keys[90]) {
+    if (crouching === false && animationRunning === false){
     if (ground === true){
       direction = 5;
       if (lookingRight === true){
@@ -387,6 +431,7 @@ function updateGameArea() {
       animationColl = 1;
     }
     }
+  }
   }
 
 
@@ -405,7 +450,7 @@ function updateGameArea() {
           animationColl = 0;
         }
         idleFrame++;
-        animationWait = 1;
+        animationWait = 2;
         if (idleFrame === 10) {
           idleFrame = 0;
           animationRow = 4;
@@ -468,13 +513,17 @@ function updateGameArea() {
           myCharacter.currentColl = animationColl;
           myCharacter.y = 210;
           myCharacter.x = 250;
+          myCharacterHitbox.x = 318;
+          myCharacterHitbox.y = 225;
+          myCharacterHitbox.width = 50;
+          myCharacterHitbox.height = 10;
           animationColl++;
           if (animationColl === 12) {
             animationRow++;
             animationColl = 0;
           }
           walkingRightFrame++;
-          animationWait = 1;
+          animationWait = 2;
           if (walkingRightFrame === 6) {
             crouching = false;
             animationRunning = false;
@@ -482,6 +531,10 @@ function updateGameArea() {
             animationRow = 4;
             animationColl = 5;
             direction = 0;
+            myCharacterHitbox.x = 0;
+            myCharacterHitbox.y = 0;
+            myCharacterHitbox.width = 0;
+            myCharacterHitbox.height = 0;
           }
 
         }
@@ -489,7 +542,7 @@ function updateGameArea() {
       }
       if (direction === 2) {
         walkingLeftFrame++;
-        animationWait = 5;
+        animationWait = 2;
         if (walkingLeftFrame === 12) {
           walkingLeftFrame = 0;
         }
@@ -513,6 +566,7 @@ function updateGameArea() {
           idleFrame++;
           animationWait = 1;
           if (idleFrame === 26) {
+            animation3Running = false;
             idleFrame = 0;
             animationRow = 4;
             animationColl = 5;
@@ -537,7 +591,7 @@ function updateGameArea() {
           animationColl = 0;
         }
         walkingRightFrame++;
-        animationWait = 1;
+        animationWait = 2;
         if (walkingRightFrame === 45) {
           animationRunning = false;
           walkingRightFrame = 0;
@@ -558,7 +612,7 @@ function updateGameArea() {
           animationColl = 0;
         }
         idleFrame++;
-        animationWait = 1;
+        animationWait = 2;
         if (idleFrame === 10) {
           idleFrame = 0;
           animationRow = 15;
@@ -618,13 +672,17 @@ function updateGameArea() {
           myCharacter.currentColl = animationColl;
           myCharacter.y = 210;
           myCharacter.x = 265;
+          myCharacterHitbox.x = 267;
+          myCharacterHitbox.y = 225;
+          myCharacterHitbox.width = 50;
+          myCharacterHitbox.height = 10;
           animationColl++;
           if (animationColl === 12) {
             animationRow++;
             animationColl = 0;
           }
           walkingRightFrame++;
-          animationWait = 1;
+          animationWait = 2;
           if (walkingRightFrame === 6) {
             crouching = false;
             animationRunning = false;
@@ -632,6 +690,10 @@ function updateGameArea() {
             animationRow = 15;
             animationColl = 1;
             direction = 0;
+            myCharacterHitbox.x = 0;
+            myCharacterHitbox.y = 0;
+            myCharacterHitbox.width = 0;
+            myCharacterHitbox.height = 0;
           }
         }
         //<!-- Walking Left Animation -->
@@ -663,6 +725,7 @@ function updateGameArea() {
           idleFrame++;
           animationWait = 1;
           if (idleFrame === 26) {
+            animation3Running = false;
             idleFrame = 0;
             animationRow = 15;
             animationColl = 1;
@@ -687,7 +750,7 @@ function updateGameArea() {
           animationColl = 0;
         }
         walkingRightFrame++;
-        animationWait = 1;
+        animationWait = 2;
         if (walkingRightFrame === 45) {
           animationRunning = false;
           walkingRightFrame = 0;
@@ -704,29 +767,31 @@ function updateGameArea() {
     direction = 0;
   }
 
+  myEnemy2.isLookingRight = false;
+  myEnemy3.isLookingRight = false;
   if (EanimationWait === 0) {
     myEnemy.currentRow = EanimationRow;
     myEnemy.currentColl = EanimationColl;
-    if (myEnemy.x < 550 && enemyLookingRight === true) {
-      myEnemy.x += 10;
-    } else {
-      enemyLookingRight = false;
-    }
-    if (myEnemy.x > 62 && enemyLookingRight === false) {
-      myEnemy.x -= 10;
-    } else {
-      enemyLookingRight = true;
-    }
+    // if (myEnemy.x < 550 && myEnemy.isLookingRight === true) {
+    //   myEnemy.x += 10;
+    // } else {
+    //   myEnemy.isLookingRight = false;
+    // }
+    // if (myEnemy.x > 62 && myEnemy.isLookingRight === false) {
+    //   myEnemy.x -= 10;
+    // } else {
+    //   myEnemy.isLookingRight = true;
+    // }
     EanimationColl++;
     if (EanimationColl === 4) {
       EanimationRow++;
       EanimationColl = 0;
     }
     enemyFrame++;
-    EanimationWait = 1;
+    EanimationWait = 2;
     if (enemyFrame === 8) {
       enemyFrame = 0;
-      if (enemyLookingRight === true) {
+      if (myEnemy.isLookingRight === true) {
         EanimationRow = 0;
         EanimationColl = 0;
       } else {
@@ -734,10 +799,85 @@ function updateGameArea() {
         EanimationColl = 0;
       }
     }
+    myEnemy2.currentRow = E2animationRow;
+    myEnemy2.currentColl = E2animationColl;
+    // if (myEnemy2.x < 550 && myEnemy2.isLookingRight === true) {
+    //   myEnemy2.x += 10;
+    // } else {
+    //   myEnemy2.isLookingRight = false;
+    // }
+    // if (myEnemy2.x > 62 && myEnemy2.isLookingRight === false) {
+    //   myEnemy2.x -= 10;
+    // } else {
+    //   myEnemy2.isLookingRight = true;
+    // }
+    E2animationColl++;
+    if (E2animationColl === 4) {
+      E2animationRow++;
+      E2animationColl = 0;
+    }
+    enemy2Frame++;
+    EanimationWait = 2;
+    if (enemy2Frame === 8) {
+      enemy2Frame = 0;
+      if (myEnemy2.isLookingRight === true) {
+        E2animationRow = 0;
+        E2animationColl = 0;
+      } else {
+        E2animationRow = 2;
+        E2animationColl = 0;
+      }
+    }
+    myEnemy3.currentRow = E3animationRow;
+    myEnemy3.currentColl = E3animationColl;
+    // if (myEnemy3.x < 550 && myEnemy3.isLookingRight === true) {
+    //   myEnemy3.x += 10;
+    // } else {
+    //   myEnemy3.isLookingRight = false;
+    // }
+    // if (myEnemy3.x > 62 && myEnemy3.isLookingRight === false) {
+    //   myEnemy3.x -= 10;
+    // } else {
+    //   myEnemy3.isLookingRight = true;
+    // }
+    E3animationColl++;
+    if (E3animationColl === 4) {
+      E3animationRow++;
+      E3animationColl = 0;
+    }
+    enemy3Frame++;
+    EanimationWait = 2;
+    if (enemy3Frame === 8) {
+      enemy3Frame = 0;
+      if (myEnemy3.isLookingRight === true) {
+        E3animationRow = 0;
+        E3animationColl = 0;
+      } else {
+        E3animationRow = 2;
+        E3animationColl = 0;
+      }
+    }
   } else {
     EanimationWait--
   }
-  console.log(animationRunning, animation4Running, animation2Running, animation3Running);
+  // if (ground === false){
+  //   if (animationRunning === false && animation4Running === false && animation3Running === false && animation2Running === false){
+  //     if (lookingRight === true){
+  //     myCharacter.currentRow = 10;
+  //     myCharacter.currentColl = 0;
+  //   } else {
+  //     myCharacter.currentRow = 20;
+  //     myCharacter.currentColl = 6;
+  //   }
+  //   }
+  // }
+
+  if (animationRunning === false && animation4Running === false && animation3Running === false && animation2Running === false){
+    myCharacterHitbox.x = 0;
+    myCharacterHitbox.y = 0;
+    myCharacterHitbox.width = 0;
+    myCharacterHitbox.height = 0;
+  }
   ground = false;
   //<!-- Game Object Updates -->
   origin.newPos();
@@ -746,10 +886,15 @@ function updateGameArea() {
   myBackground.update();
   gornd.newPos();
   gornd.update();
-  myCharacter.update();
   myEnemy.newPos();
   myEnemy.update();
+  myEnemy2.newPos();
+  myEnemy2.update();
+  myEnemy3.newPos();
+  myEnemy3.update();
+  myCharacter.update();
   myCharacterHurtbox.update();
+  myCharacterHitbox.update();
   for (var i = 0; i < Bounds.length; i++) {
     Bounds[i].newPos();
     Bounds[i].update();
@@ -759,7 +904,7 @@ function updateGameArea() {
 
 //<!-- Jump Function -->
 function jump(x) {
-  if (jumpHold < 20) {
+  if (jumpHold < 3) {
     if (x <= 0) {
       jumpSpeed = x;
     }
