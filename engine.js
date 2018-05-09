@@ -1,17 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var myCharacter;
 var myBackground;
 //var myForground;
@@ -19,50 +5,51 @@ var gornd;
 var scale = 1.5;
 var Bounds = [];
 var origin;
+
 function startGame() {
-//<!-- Game objects (width, height, src, x, y, type, spriteRows, spriteCols) -->
+  //<!-- Game objects (width, height, src, x, y, type, spriteRows, spriteCols) -->
   origin = new component(1, 1, "", 0, 1000, "image");
-  myCharacter = new component(392, 274, "finalSpriteSheet.png", 275, 180, "character",22, 12);
+  myCharacter = new component(392, 274, "completeSpriteSheet.png", 275, 180, "character", 30, 12);
   myCharacterHurtbox = new component(83, 101, "transparent", 275, 180, "hurtBox");
   myBackground = new component(640, 480, "fdbackgorund.png", 0, 0, "background");
   //myForground = new component(640, 480, "samus.png", 0, 0, "image");
-  gornd = new component(640*scale, 480*scale, "MeleeBattlefield.png", 0, 0, "image");
-  myEnemy = new component(400/6, 400/6, "Slime2.png", 62, 390, "character", 4, 4);
-  myCharacterHitbox = new component(83, 101,"lightgreen", 275, 180, "hitbox");
- //180, 180
-//<!-- Game Bounds -->
+  gornd = new component(640 * scale, 480 * scale, "MeleeBattlefield.png", 0, 0, "image");
+  myEnemy = new component(400 / 6, 400 / 6, "Slime2.png", 62, 390, "character", 4, 4);
+  myCharacterHitbox = new component(0, 0, "lightgreen", 0, 0, "hitbox");
+  //180, 180
+  //<!-- Game Bounds -->
   //<!-- Non-Passable Game Bounds -->
-  Bounds[0] = myBound0 = new component(593*scale, 2*scale, "transparent", 20*scale, 303*scale, "wall");
+  Bounds[0] = myBound0 = new component(593 * scale, 2 * scale, "transparent", 20 * scale, 303 * scale, "wall");
   // Bounds[4] = myBound4 = new component(2*scale, 100*scale, "transparent", 62*scale, 94*scale, "wall");
   // Bounds[5] = myBound5 = new component(2*scale, 100*scale, "transparent", 220*scale, 94*scale, "wall");
   // Bounds[6] = myBound6 = new component(158*scale, 2*scale, "transparent", 62*scale, 94*scale, "wall");
   //<!-- Only Stand Game Bounds -->
-  Bounds[1] = myBound1 = new component(158*scale, 2*scale, "transparent", 62*scale, 194*scale, "passablewall");
-  Bounds[2] = myBound2 = new component(158*scale, 2*scale, "transparent", 412*scale, 194*scale, "passablewall");
-  Bounds[3] = myBound3 = new component(166*scale, 2*scale, "transparent", 233*scale, 80*scale, "passablewall");
-//<!---->
-//<!---->
+  Bounds[1] = myBound1 = new component(158 * scale, 2 * scale, "transparent", 62 * scale, 194 * scale, "passablewall");
+  Bounds[2] = myBound2 = new component(158 * scale, 2 * scale, "transparent", 412 * scale, 194 * scale, "passablewall");
+  Bounds[3] = myBound3 = new component(166 * scale, 2 * scale, "transparent", 233 * scale, 80 * scale, "passablewall");
+  //<!---->
+  //<!---->
 
 
 
 
 
 
-//<!-- Game initialization -->
+  //<!-- Game initialization -->
   myGameArea.start();
 }
 
 var myGameArea = {
   canvas: document.createElement("canvas"),
   start: function() {
-//<!-- Canvas creation -->
+    //<!-- Canvas creation -->
     this.canvas.width = 640;
     this.canvas.height = 480;
     this.context = this.canvas.getContext("2d");
     document.body.prepend(this.canvas, document.body.childNodes[0]);
-//<!-- Frame Rate -->
+    //<!-- Frame Rate -->
     this.interval = setInterval(updateGameArea, 16.67);
-//<!-- Key Listeners for canvas -->
+    //<!-- Key Listeners for canvas -->
     window.addEventListener('keydown', function(e) {
       myGameArea.keys = (myGameArea.keys || []);
       myGameArea.keys[e.keyCode] = (e.type == "keydown");
@@ -72,7 +59,7 @@ var myGameArea = {
     })
   },
   clear: function() {
-//<!-- Refresh canvas -->
+    //<!-- Refresh canvas -->
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 }
@@ -106,26 +93,26 @@ function component(width, height, color, x, y, type, spriteRows, spriteCols) {
         var cColl = this.currentColl;
         var spriteWidth = this.image.width / this.spriteCols;
         var spriteHeight = this.image.height / this.spriteRows;
-        ctx.drawImage(this.image, cColl * spriteWidth,cRow * spriteHeight, spriteWidth, spriteHeight, this.x, this.y, this.width, this.height);
-      }else {
-      ctx.drawImage(this.image,
-        this.x,
-        this.y,
-        this.width, this.height);
-//<!-- Background loop -->
-      if (type == "background") {
+        ctx.drawImage(this.image, cColl * spriteWidth, cRow * spriteHeight, spriteWidth, spriteHeight, this.x, this.y, this.width, this.height);
+      } else {
         ctx.drawImage(this.image,
-          this.x + this.width,
+          this.x,
           this.y,
           this.width, this.height);
+        //<!-- Background loop -->
+        if (type == "background") {
+          ctx.drawImage(this.image,
+            this.x + this.width,
+            this.y,
+            this.width, this.height);
+        }
       }
-    }
     } else {
       ctx.fillStyle = color;
       ctx.fillRect(this.x, this.y, this.width, this.height);
     }
   }
-//<!-- Change Objects Position -->
+  //<!-- Change Objects Position -->
   this.newPos = function() {
     if (this.type === "background") {
       this.x += this.speedX;
@@ -135,13 +122,13 @@ function component(width, height, color, x, y, type, spriteRows, spriteCols) {
       }
 
     } else {
-//<!-- Gravity -->
+      //<!-- Gravity -->
       this.gravitySpeed += origin.gravity;
       this.x += origin.speedX;
       this.y += origin.speedY + origin.gravitySpeed;
     }
   }
-//<!-- Collision -->
+  //<!-- Collision -->
   this.collide = function(otherobj) {
     var myleft = this.x;
     var myright = this.x + (this.width);
@@ -166,7 +153,7 @@ function component(width, height, color, x, y, type, spriteRows, spriteCols) {
         collisions[2] = false;
         collisions[3] = false;
       }
-//<!-- Collision Logic -->
+      //<!-- Collision Logic -->
       if (otherobj.type === "wall") {
         if (topcollision < bottomcollision && topcollision < leftcollision && topcollision < rightcollision) {
           collisions[0] = true;
@@ -212,20 +199,24 @@ var EanimationColl = 0;
 var animationRunning = false;
 var animation2Running = false;
 var animation3Running = false;
+var animation4Running = false;
 var keyHold = false;
 var hitGround = false;
 var enemyLookingRight = true;
+var crouching = false;
+
 function updateGameArea() {
 
 
 
-//<!-- Ground Collision -->
+  //<!-- Ground Collision -->
   for (var i = 0; i < Bounds.length; i++) {
     if (myCharacterHurtbox.collide(Bounds[i])) {
       if (collisions[2]) {
-        if (hitGround === false)
-        {
-          if (lookingRight === true){
+        animation3Running = false;
+        animation2Running = false;
+        if (hitGround === false) {
+          if (lookingRight === true) {
             idleFrame = 0;
             animationRow = 4;
             animationColl = 5;
@@ -239,8 +230,8 @@ function updateGameArea() {
         origin.gravity = 0;
         jumpHold = 0;
         ground = true;
-        if (animationRunning === false){
-        direction = 0;
+        if (animationRunning === false && crouching === false) {
+          direction = 0;
         }
         hitGround = true;
       }
@@ -255,330 +246,500 @@ function updateGameArea() {
   if (collisions[0]) {
     jumpSpeed = 0;
   }
-  if (myCharacterHitbox.collide(myEnemy))
-  { myEnemy.health--; console.log(myEnemy.health)}
+  if (myCharacterHitbox.collide(myEnemy)) {
+    myEnemy.health--;
+    console.log(myEnemy.health)
+  }
   myGameArea.clear();
-//<!-- Background Scroll Speed -->
+  //<!-- Background Scroll Speed -->
   myBackground.speedX = -3;
   origin.speedX = 0;
   origin.speedY = -jumpSpeed;
   if (myGameArea.keys && myGameArea.keys[37]) {
     //direction = 2;
-    if (animationRunning === false){
-    lookingRight = false;
+    if (animationRunning === false) {
+      if (animation2Running === false && animation3Running === false){
+      animationRow = 15;
+      animationColl = 1;
+      myCharacter.currentRow = 15;
+      myCharacter.currentColl = 1;
+      }
+      if (animation3Running === false){
+      lookingRight = false;
+      }
     }
-//<!-- Left Wall Collision -->
+    //<!-- Left Wall Collision -->
     if (collisions[1] === false) {
-      if (animationRunning === false){
-      origin.speedX = 5;
-    }
+      if (animationRunning === false) {
+        origin.speedX = 5;
+      }
     }
     keyHold = true;
-  } else {keyhold = false;}
+  } else {
+    keyhold = false;
+  }
   if (myGameArea.keys && myGameArea.keys[39]) {
     //direction = 3;
-    if (animationRunning === false){
-    
-    lookingRight = true;
+    if (animationRunning === false) {
+      if (animation2Running === false && animation3Running === false){
+      animationRow = 4;
+      animationColl = 5;
+      myCharacter.currentRow = 4;
+      myCharacter.currentColl = 5;
+      }
+      if (animation3Running === false){
+      lookingRight = true;
     }
-//<!-- Right Wall Collision -->
+    }
+    //<!-- Right Wall Collision -->
     if (collisions[3] === false) {
-      if (animationRunning === false){
-      origin.speedX = -5;
-    }
+      if (animationRunning === false) {
+        origin.speedX = -5;
+      }
     }
     keyHold = true;
-  } else {keyhold = false;}
+  } else {
+    keyhold = false;
+  }
   if (myGameArea.keys && myGameArea.keys[38]) {
-    if (animationRunning === false){
-        if (lookingRight === true){
+    if (animationRunning === false) {
+      if (lookingRight === true) {
         animationRow = 5;
         animationColl = 3;
-        } else{
+      } else {
         animationRow = 15;
         animationColl = 11;
-        }
+      }
       jumpHold++;
       direction = 4;
       jump(-10);
     }
   }
   if (myGameArea.keys && myGameArea.keys[40]) {
-    if (animationRunning === false){
-    origin.speedY = -5;
-  }
+    if (animationRunning === false && animation2Running === false && animation3Running === false) {
+      if (crouching === false) {
+        if (lookingRight === true) {
+          animationRow = 21;
+          animationColl = 4;
+          myCharacter.currentRow = 21;
+          myCharacter.currentColl = 4;
+          myCharacter.y = 210;
+          myCharacter.x = 250;
+        } else {
+          animationRow = 25;
+          animationColl = 7;
+          myCharacter.currentRow = 25;
+          myCharacter.currentColl = 7;
+          myCharacter.y = 210;
+          myCharacter.x = 265;
+        }
+      }
+      crouching = true;
+    }
+  } else {
+    if (crouching === true) {
+      animationRunning = false;
+      if (lookingRight === true) {
+        animationRow = 4;
+        animationColl = 5;
+      } else {
+        animationRow = 15;
+        animationColl = 1;
+      }
+    }
+    crouching = false
   }
   if (myGameArea.keys && myGameArea.keys[88]) {
-    direction = 1;
-    if (animationRunning === false && animation2Running === false){
-      if (lookingRight === true){
-      if (ground === true){
-      animationRow = 0;
-      animationColl = 0;
-    } else{
-      animationRow = 7;
-      animationColl = 11;
+    if (animationRunning === false && animation2Running === false) {
+        direction = 1;
+      if (lookingRight === true) {
+        if (crouching === false) {
+          if (ground === true) {
+            animationRow = 0;
+            animationColl = 0;
+          } else {
+            animationRow = 7;
+            animationColl = 11;
 
+          }
+        }
+      } else {
+        if (crouching === false) {
+          if (ground === true) {
+            animationRow = 10;
+            animationColl = 8;
+          } else {
+            animationRow = 18;
+            animationColl = 7;
+          }
+        }
+      }
     }
-  }else {
+  }
+  if (myGameArea.keys && myGameArea.keys[90]) {
     if (ground === true){
-    animationRow = 10;
-    animationColl = 8;
+      direction = 5;
+      if (lookingRight === true){
+      animationRow = 21;
+      animationColl = 10;
     } else{
-    animationRow = 18;
-    animationColl = 7;
-  }
-  }
-  }
+      animationRow = 26;
+      animationColl = 1;
+    }
+    }
   }
 
-//<!-- Idel Animation -->
+
+  //<!-- Idel Animation -->
   if (animationWait === 0) {
-    if (lookingRight === true){
-    if (direction === 0 && ground === true) {
+    if (lookingRight === true) {
+      if (direction === 0 && ground === true && crouching === false) {
+        direction = 0;
+        myCharacter.currentRow = animationRow;
+        myCharacter.currentColl = animationColl;
+        myCharacter.x = 275;
+        myCharacter.y = 180;
+        animationColl++;
+        if (animationColl === 12) {
+          animationRow++;
+          animationColl = 0;
+        }
+        idleFrame++;
+        animationWait = 1;
+        if (idleFrame === 10) {
+          idleFrame = 0;
+          animationRow = 4;
+          animationColl = 5;
+        }
+        //<!-- Axe Kick Animation -->
+      }
+      if (direction === 1) {
+        if (ground === true && animation2Running === false && crouching === false) {
+          if (animationRunning === false){
+            animationRow = 0;
+            animationColl = 0;
+          }
+          animationRunning = true;
+          myCharacter.currentRow = animationRow;
+          myCharacter.currentColl = animationColl;
+          myCharacter.x = 199;
+          myCharacter.y = 23;
+          animationColl++;
+          if (animationColl === 12) {
+            animationRow++;
+            animationColl = 0;
+          }
+          walkingRightFrame++;
+          animationWait = 1;
+          if (walkingRightFrame > 20 && walkingRightFrame > 31) {
 
-      direction = 0;
-      myCharacter.currentRow = animationRow;
-      myCharacter.currentColl = animationColl;
-      myCharacter.x = 275;
-      myCharacter.y = 180;
-      animationColl++;
-      if (animationColl === 12){
-        animationRow++;
-        animationColl = 0;
+          }
+          if (walkingRightFrame === 53) {
+            animationRunning = false;
+            walkingRightFrame = 0;
+            animationRow = 4;
+            animationColl = 5;
+            direction = 0;
+          }
+        } else if (ground === false) {
+          animation2Running = true;
+          myCharacter.currentRow = animationRow;
+          myCharacter.currentColl = animationColl;
+          myCharacter.x = 211;
+          myCharacter.y = 126;
+          animationColl++;
+          if (animationColl === 12) {
+            animationRow++;
+            animationColl = 0;
+          }
+          walkingRightFrame++;
+          animationWait = 1;
+          if (walkingRightFrame === 21) {
+            animation2Running = false;
+            animationRunning = false;
+            walkingRightFrame = 0;
+            animationRow = 4;
+            animationColl = 5;
+            direction = 0;
+          }
+        } else if (crouching === true) {
+          animationRunning = true;
+          myCharacter.currentRow = animationRow;
+          myCharacter.currentColl = animationColl;
+          myCharacter.y = 210;
+          myCharacter.x = 250;
+          animationColl++;
+          if (animationColl === 12) {
+            animationRow++;
+            animationColl = 0;
+          }
+          walkingRightFrame++;
+          animationWait = 1;
+          if (walkingRightFrame === 6) {
+            crouching = false;
+            animationRunning = false;
+            walkingRightFrame = 0;
+            animationRow = 4;
+            animationColl = 5;
+            direction = 0;
+          }
+
+        }
+        //<!-- Walking Left Animation -->
       }
-      idleFrame++;
-      animationWait = 1;
-      if (idleFrame === 10) {
-        idleFrame = 0;
-        animationRow = 4;
-        animationColl = 5;
+      if (direction === 2) {
+        walkingLeftFrame++;
+        animationWait = 5;
+        if (walkingLeftFrame === 12) {
+          walkingLeftFrame = 0;
+        }
+        //<!-- Jumping Animation -->
       }
-//<!-- Axe Kick Animation -->
-    }
-     if (direction === 1) {
-      if (ground === true && animation2Running === false){
-      animationRunning = true;
-      myCharacter.currentRow = animationRow;
-      myCharacter.currentColl = animationColl;
-      myCharacter.x = 199;
-      myCharacter.y = 23;
-      animationColl++;
-      if (animationColl === 12){
-        animationRow++;
-        animationColl = 0;
+      if (direction === 4) {
+        if (ground === false) {
+          animation3Running = true;
+          myCharacter.currentRow = animationRow;
+          myCharacter.currentColl = animationColl;
+          myCharacter.x = 261;
+          if (idleFrame < 27) {
+            myCharacter.x = 261 - 6 * idleFrame;
+          } else(myCharacter.x = 261 - 6 * 27)
+          myCharacter.y = 64;
+          animationColl++;
+          if (animationColl === 12) {
+            animationRow++;
+            animationColl = 0;
+          }
+          idleFrame++;
+          animationWait = 1;
+          if (idleFrame === 26) {
+            idleFrame = 0;
+            animationRow = 4;
+            animationColl = 5;
+            direction = 0;
+          }
+        } else {
+          idleFrame = 0;
+          animationRow = 4;
+          animationColl = 5;
+          direction = 0;
+        }
       }
-      walkingRightFrame++;
-      animationWait = 1;
-      if (walkingRightFrame > 20 && walkingRightFrame > 31)
-      if (walkingRightFrame === 53) {
-        animationRunning = false;
-        walkingRightFrame = 0;
-        animationRow = 4;
-        animationColl = 5;
-        direction = 0;
-      }
-    } else {
-      animation2Running = true;
-      myCharacter.currentRow = animationRow;
-      myCharacter.currentColl = animationColl;
-      myCharacter.x = 211;
-      myCharacter.y = 126;
-      animationColl++;
-      if (animationColl === 12){
-        animationRow++;
-        animationColl = 0;
-      }
-      walkingRightFrame++;
-      animationWait = 1;
-      if (walkingRightFrame === 21) {
-        animation2Running = false;
-        animationRunning = false;
-        walkingRightFrame = 0;
-        animationRow = 4;
-        animationColl = 5;
-        direction = 0;
-      }
-    }
-//<!-- Walking Left Animation -->
-    } else if (direction === 2) {
-      walkingLeftFrame++;
-      animationWait = 5;
-      if (walkingLeftFrame === 12) {
-        walkingLeftFrame = 0;
-      }
-//<!-- Jumping Animation -->
-    } else if (direction === 4) {
-      if (ground === false){
-      animation3Running = true;
-      myCharacter.currentRow = animationRow;
-      myCharacter.currentColl = animationColl;
-      myCharacter.x = 261;
-      if (idleFrame < 27){
-        myCharacter.x = 261 - 6*idleFrame;
-      }else (myCharacter.x = 261 - 6*27)
-      myCharacter.y = 64;
-      animationColl++;
-      if (animationColl === 12){
-        animationRow++;
-        animationColl = 0;
-      }
-      idleFrame++;
-      animationWait = 1;
-      if (idleFrame === 26) {
-        idleFrame = 0;
-        animationRow = 4;
-        animationColl = 5;
-        direction = 0;
-      }
-    }else{
-    idleFrame = 0;
-    animationRow = 4;
-    animationColl = 5;
-    direction = 0;
-    }
-    }
-  }else {
-    if (direction === 0 && ground === true) {
-      myCharacter.currentRow = animationRow;
-      myCharacter.currentColl = animationColl;
-      myCharacter.x = 275;
-      myCharacter.y = 180;
-      animationColl++;
-      if (animationColl === 12){
-        animationRow++;
-        animationColl = 0;
-      }
-      idleFrame++;
-      animationWait = 1;
-      if (idleFrame === 10) {
-        idleFrame = 0;
-        animationRow = 15;
-        animationColl = 1;
-      }
-//<!-- Axe Kick Animation -->
-    }
-     if (direction === 1) {
-      if (ground === true && animation2Running === false){
-      animationRunning = true;
-      myCharacter.currentRow = animationRow;
-      myCharacter.currentColl = animationColl;
-      myCharacter.x = 41;
-      myCharacter.y = 23;
-      animationColl++;
-      if (animationColl === 12){
-        animationRow++;
-        animationColl = 0;
-      }
-      walkingRightFrame++;
-      animationWait = 1;
-      if (walkingRightFrame === 53) {
-        animationRunning = false;
-        walkingRightFrame = 0;
-        animationRow = 15;
-        animationColl = 1;
-        direction = 0;
+      if (direction === 5){
+        animationRunning = true;
+        myCharacter.currentRow = animationRow;
+        myCharacter.currentColl = animationColl;
+        myCharacter.x = 245;
+        myCharacter.y = 170;
+        animationColl++;
+        if (animationColl === 12) {
+          animationRow++;
+          animationColl = 0;
+        }
+        walkingRightFrame++;
+        animationWait = 1;
+        if (walkingRightFrame === 45) {
+          animationRunning = false;
+          walkingRightFrame = 0;
+          animationRow = 4;
+          animationColl = 5;
+          direction = 0;
+        }
       }
     } else {
-      animation2Running = true;
-      myCharacter.currentRow = animationRow;
-      myCharacter.currentColl = animationColl;
-      myCharacter.x = 220;
-      myCharacter.y = 126;
-      animationColl++;
-      if (animationColl === 12){
-        animationRow++;
-        animationColl = 0;
+      if (direction === 0 && ground === true && crouching === false) {
+        myCharacter.currentRow = animationRow;
+        myCharacter.currentColl = animationColl;
+        myCharacter.x = 275;
+        myCharacter.y = 180;
+        animationColl++;
+        if (animationColl === 12) {
+          animationRow++;
+          animationColl = 0;
+        }
+        idleFrame++;
+        animationWait = 1;
+        if (idleFrame === 10) {
+          idleFrame = 0;
+          animationRow = 15;
+          animationColl = 1;
+        }
+        //<!-- Axe Kick Animation -->
       }
-      walkingRightFrame++;
-      animationWait = 1;
-      if (walkingRightFrame === 21) {
-        animation2Running = false;
-        animationRunning = false;
-        walkingRightFrame = 0;
-        animationRow = 15;
-        animationColl = 1;
-        direction = 0;
+      if (direction === 1) {
+        if (ground === true && animation2Running === false && crouching === false) {
+          if (animationRunning === false){
+            animationRow = 10;
+            animationColl = 8;
+          }
+          animationRunning = true;
+          myCharacter.currentRow = animationRow;
+          myCharacter.currentColl = animationColl;
+          myCharacter.x = 41;
+          myCharacter.y = 23;
+          animationColl++;
+          if (animationColl === 12) {
+            animationRow++;
+            animationColl = 0;
+          }
+          walkingRightFrame++;
+          animationWait = 1;
+          if (walkingRightFrame === 53) {
+            animationRunning = false;
+            walkingRightFrame = 0;
+            animationRow = 15;
+            animationColl = 1;
+            direction = 0;
+          }
+        } else if (ground === false) {
+          animation2Running = true;
+          myCharacter.currentRow = animationRow;
+          myCharacter.currentColl = animationColl;
+          myCharacter.x = 220;
+          myCharacter.y = 126;
+          animationColl++;
+          if (animationColl === 12) {
+            animationRow++;
+            animationColl = 0;
+          }
+          walkingRightFrame++;
+          animationWait = 1;
+          if (walkingRightFrame === 21) {
+            animation2Running = false;
+            animationRunning = false;
+            walkingRightFrame = 0;
+            animationRow = 15;
+            animationColl = 1;
+            direction = 0;
+          }
+        } else if (crouching === true) {
+          animationRunning = true;
+          myCharacter.currentRow = animationRow;
+          myCharacter.currentColl = animationColl;
+          myCharacter.y = 210;
+          myCharacter.x = 265;
+          animationColl++;
+          if (animationColl === 12) {
+            animationRow++;
+            animationColl = 0;
+          }
+          walkingRightFrame++;
+          animationWait = 1;
+          if (walkingRightFrame === 6) {
+            crouching = false;
+            animationRunning = false;
+            walkingRightFrame = 0;
+            animationRow = 15;
+            animationColl = 1;
+            direction = 0;
+          }
+        }
+        //<!-- Walking Left Animation -->
+      }
+      if (direction === 2) {
+        walkingLeftFrame++;
+        animationWait = 5;
+        if (walkingLeftFrame === 12) {
+          walkingLeftFrame = 0;
+        }
+        //<!-- Jumping Animation -->
+      }
+      if (direction === 4) {
+        if (ground === false) {
+          walkingRightFrame = 0;
+          animation3Running = true;
+          myCharacter.currentRow = animationRow;
+          myCharacter.currentColl = animationColl;
+          myCharacter.x = 95;
+          if (idleFrame < 27) {
+            myCharacter.x = 95 + 6 * idleFrame;
+          } else(myCharacter.x = 95 + 6 * 27)
+          myCharacter.y = 64;
+          animationColl++;
+          if (animationColl === 12) {
+            animationRow++;
+            animationColl = 0;
+          }
+          idleFrame++;
+          animationWait = 1;
+          if (idleFrame === 26) {
+            idleFrame = 0;
+            animationRow = 15;
+            animationColl = 1;
+            direction = 0;
+          }
+        } else {
+          idleFrame = 0;
+          animationRow = 15;
+          animationColl = 1;
+          direction = 0;
+        }
+      }
+      if (direction === 5){
+        animationRunning = true;
+        myCharacter.currentRow = animationRow;
+        myCharacter.currentColl = animationColl;
+        myCharacter.x = 290;
+        myCharacter.y = 170;
+        animationColl++;
+        if (animationColl === 12) {
+          animationRow++;
+          animationColl = 0;
+        }
+        walkingRightFrame++;
+        animationWait = 1;
+        if (walkingRightFrame === 45) {
+          animationRunning = false;
+          walkingRightFrame = 0;
+          animationRow = 15;
+          animationColl = 1;
+          direction = 0;
+        }
       }
     }
-//<!-- Walking Left Animation -->
-    } else if (direction === 2) {
-      walkingLeftFrame++;
-      animationWait = 5;
-      if (walkingLeftFrame === 12) {
-        walkingLeftFrame = 0;
-      }
-//<!-- Jumping Animation -->
-    } else if (direction === 4) {
-      if (ground === false){
-        walkingRightFrame = 0;
-      animation3Running = true;
-      myCharacter.currentRow = animationRow;
-      myCharacter.currentColl = animationColl;
-      myCharacter.x = 95;
-      if (idleFrame < 27){
-        myCharacter.x = 95 + 6*idleFrame;
-      }else (myCharacter.x = 95 + 6*27)
-      myCharacter.y = 64;
-      animationColl++;
-      if (animationColl === 12){
-        animationRow++;
-        animationColl = 0;
-      }
-      idleFrame++;
-      animationWait = 1;
-      if (idleFrame === 26) {
-        idleFrame = 0;
-        animationRow = 15;
-        animationColl = 1;
-        direction = 0;
-      }
-    }else{
-    idleFrame = 0;
-    animationRow = 15;
-    animationColl = 1;
-    direction = 0;
-    }
-    }
-  }
   } else {
     animationWait = animationWait - 1;
   }
-  if (animationRunning === false && animation2Running === false && animation3Running === false){
-  direction = 0;
+  if (animationRunning === false && animation2Running === false && animation3Running === false && animation4Running === false) {
+    direction = 0;
   }
 
-  if (EanimationWait === 0){
-  myEnemy.currentRow = EanimationRow;
-  myEnemy.currentColl = EanimationColl;
-  if (myEnemy.x < 550 && enemyLookingRight === true){
-  myEnemy.x += 10;
-} else {enemyLookingRight = false;}
-  if (myEnemy.x > 62 && enemyLookingRight === false){
-    myEnemy.x -= 10;
-  } else {enemyLookingRight = true;}
-  EanimationColl++;
-  if (EanimationColl === 4){
-    EanimationRow++;
-    EanimationColl = 0;
-  }
-  enemyFrame++;
-  EanimationWait = 1;
-  if (enemyFrame === 8) {
-    enemyFrame = 0;
-    if (enemyLookingRight === true){
-      EanimationRow = 0;
-      EanimationColl = 0;
+  if (EanimationWait === 0) {
+    myEnemy.currentRow = EanimationRow;
+    myEnemy.currentColl = EanimationColl;
+    if (myEnemy.x < 550 && enemyLookingRight === true) {
+      myEnemy.x += 10;
     } else {
-      EanimationRow = 2;
+      enemyLookingRight = false;
+    }
+    if (myEnemy.x > 62 && enemyLookingRight === false) {
+      myEnemy.x -= 10;
+    } else {
+      enemyLookingRight = true;
+    }
+    EanimationColl++;
+    if (EanimationColl === 4) {
+      EanimationRow++;
       EanimationColl = 0;
     }
+    enemyFrame++;
+    EanimationWait = 1;
+    if (enemyFrame === 8) {
+      enemyFrame = 0;
+      if (enemyLookingRight === true) {
+        EanimationRow = 0;
+        EanimationColl = 0;
+      } else {
+        EanimationRow = 2;
+        EanimationColl = 0;
+      }
+    }
+  } else {
+    EanimationWait--
   }
-} else {EanimationWait--}
-
-
+  console.log(animationRunning, animation4Running, animation2Running, animation3Running);
   ground = false;
-//<!-- Game Object Updates -->
+  //<!-- Game Object Updates -->
   origin.newPos();
   origin.update();
   myBackground.newPos();
