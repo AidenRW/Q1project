@@ -17,14 +17,14 @@ function startGame() {
   myEnemy = new component(400 / 6, 400 / 6, "Slime2.png", 62, 390, "character", 4, 4);
   myEnemy2 = new component(400 / 6, 400 / 6, "Slime2.png", 750, 225, "character", 4, 4);
   myEnemy3 = new component(400 / 6, 400 / 6, "Slime2.png", 440, 65, "character", 4, 4);
-  myCharacterHitbox = new component(0, 0, "transparent", 0, 0, "hitbox");
+  myCharacterHitbox = new component(0, 0, "lightgreen", 0, 0, "hitbox");
   //180, 180
   //<!-- Game Bounds -->
   //<!-- Non-Passable Game Bounds -->
   Bounds[0] = myBound0 = new component(593 * scale, 2 * scale, "transparent", 20 * scale, 303 * scale, "wall");
   // Bounds[4] = myBound4 = new component(2*scale, 100*scale, "red", 62*scale, 94*scale, "wall");
-  // Bounds[5] = myBound5 = new component(2*scale, 100*scale, "red", 220*scale, 94*scale, "wall");
-  // Bounds[6] = myBound6 = new component(158*scale, 2*scale, "red", 62*scale, 94*scale, "wall");
+  // Bounds[6] = myBound6 = new component(2*scale, 100*scale, "red", 220*scale, 94*scale, "wall");
+  // Bounds[5] = myBound5 = new component(158*scale, 2*scale, "red", 62*scale, 94*scale, "wall");
   //<!-- Only Stand Game Bounds -->
   Bounds[1] = myBound1 = new component(158 * scale, 2 * scale, "transparent", 62 * scale, 194 * scale, "passablewall");
   Bounds[2] = myBound2 = new component(158 * scale, 2 * scale, "transparent", 412 * scale, 194 * scale, "passablewall");
@@ -251,7 +251,7 @@ function updateGameArea() {
   collisions[4] = false;
   if (ground === false) {
     hitGround = false;
-    origin.gravity = -0.1;
+    origin.gravity = -0.2;
   }
   jump();
   if (collisions[0]) {
@@ -946,17 +946,21 @@ function updateGameArea() {
     }
     enemy3Frame--;
   }
-  // if (ground === false){
-  //   if (animationRunning === false && animation4Running === false && animation3Running === false && animation2Running === false){
-  //     if (lookingRight === true){
-  //     myCharacter.currentRow = 10;
-  //     myCharacter.currentColl = 0;
-  //   } else {
-  //     myCharacter.currentRow = 20;
-  //     myCharacter.currentColl = 6;
-  //   }
-  //   }
-  // }
+  if (ground === false){
+    if (animationRunning === false && animation4Running === false && animation3Running === false && animation2Running === false){
+      if (lookingRight === true){
+      myCharacter.currentRow = 10;
+      myCharacter.currentColl = 0;
+      myCharacter.x = 220;
+      myCharacter.y = 104;
+    } else {
+      myCharacter.currentRow = 20;
+      myCharacter.currentColl = 6;
+      myCharacter.x = 200;
+      myCharacter.y = 114;
+    }
+    }
+  }
 
   if (animationRunning === false && animation4Running === false && animation3Running === false && animation2Running === false){
     myCharacterHitbox.x = 0;
