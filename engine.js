@@ -8,7 +8,7 @@ var origin;
 
 function startGame() {
   //<!-- Game objects (width, height, src, x, y, type, spriteRows, spriteCols) -->
-  origin = new component(1, 1, "", 0, 1000, "image");
+  origin = new component(1, 1, "", 0, 0, "image");
   myCharacter = new component(392, 274, "completeSpriteSheet.png", 275, 180, "character", 30, 12);
   myCharacterHurtbox = new component(83, 101, "transparent", 275, 180, "hurtBox");
   myBackground = new component(640, 480, "fdbackgorund.png", 0, 0, "background");
@@ -259,31 +259,22 @@ function updateGameArea() {
   }
   if (myCharacterHitbox.collide(myEnemy)) {
     myEnemy.health--;
-    console.log(myEnemy.health);
     if(myEnemy.health < 0){
-      myEnemy.x = 0;
-      myEnemy.y = 0;
-      myEnemy.width = 0;
-      myEnemy.height = 0;
+      myEnemy.knockback = true;
+      enemyFrame = 30;
     }
   }
   if (myCharacterHitbox.collide(myEnemy2)) {
     myEnemy2.health--;
-    console.log(myEnemy2.health);
     if(myEnemy2.health < 0){
-      myEnemy2.x = 0;
-      myEnemy2.y = 0;
-      myEnemy2.width = 0;
-      myEnemy2.height = 0;
+      myEnemy2.knockback = true;
+      enemy2Frame = 30;
     }
   }if (myCharacterHitbox.collide(myEnemy3)) {
     myEnemy3.health--;
-    console.log(myEnemy3.health);
     if(myEnemy3.health < 0){
-      myEnemy3.x = 0;
-      myEnemy3.y = 0;
-      myEnemy3.width = 0;
-      myEnemy3.height = 0;
+      myEnemy3.knockback = true;
+      enemy3Frame = 30;
     }
   }
   myGameArea.clear();
@@ -432,6 +423,26 @@ function updateGameArea() {
     }
     }
   }
+  }
+  if (myGameArea.keys && myGameArea.keys[69]) {
+    myEnemy.x = origin.x + 62;
+    myEnemy.y = origin.y + 390;
+    myEnemy.width = 67;
+    myEnemy.height = 67;
+    myEnemy.knockback = false;
+    enemyFrame = 0;
+    myEnemy2.x = origin.x + 750;
+    myEnemy2.y = origin.y + 225;
+    myEnemy2.width = 67;
+    myEnemy2.height = 67;
+    myEnemy2.knockback = false;
+    enemy2Frame = 0;
+    myEnemy3.x = origin.x + 440;
+    myEnemy3.y = origin.y + 65;
+    myEnemy3.width = 67;
+    myEnemy3.height = 67;
+    myEnemy3.knockback = false;
+    enemy3Frame = 0;
   }
 
 
@@ -770,6 +781,7 @@ function updateGameArea() {
   myEnemy2.isLookingRight = false;
   myEnemy3.isLookingRight = false;
   if (EanimationWait === 0) {
+    if (myEnemy.knockback === false){
     myEnemy.currentRow = EanimationRow;
     myEnemy.currentColl = EanimationColl;
     // if (myEnemy.x < 550 && myEnemy.isLookingRight === true) {
@@ -799,6 +811,8 @@ function updateGameArea() {
         EanimationColl = 0;
       }
     }
+    }
+    if (myEnemy2.knockback === false){
     myEnemy2.currentRow = E2animationRow;
     myEnemy2.currentColl = E2animationColl;
     // if (myEnemy2.x < 550 && myEnemy2.isLookingRight === true) {
@@ -828,6 +842,8 @@ function updateGameArea() {
         E2animationColl = 0;
       }
     }
+  }
+    if (myEnemy3.knockback === false){
     myEnemy3.currentRow = E3animationRow;
     myEnemy3.currentColl = E3animationColl;
     // if (myEnemy3.x < 550 && myEnemy3.isLookingRight === true) {
@@ -857,8 +873,78 @@ function updateGameArea() {
         E3animationColl = 0;
       }
     }
+    }
   } else {
     EanimationWait--
+  }
+  if (myEnemy.knockback === true) {
+    if(enemyFrame > 0){
+      if (myEnemy.isLookingRight === true){
+      myEnemy.x -= 25;
+      myEnemy.y -= 10;
+      myEnemy.width += 10;
+      myEnemy.height += 10;
+    }else{
+      myEnemy.x += 15;
+      myEnemy.y -= 10;
+      myEnemy.width += 10;
+      myEnemy.height += 10;
+    }
+    }
+    else{
+      myEnemy.x = 0;
+      myEnemy.y = 0;
+      myEnemy.height = 0;
+      myEnemy.width = 0;
+      myEnemy.knockback = false;
+    }
+    enemyFrame--;
+  }
+  if (myEnemy2.knockback === true) {
+    if(enemy2Frame > 0){
+      if (myEnemy2.isLookingRight === true){
+      myEnemy2.x -= 25;
+      myEnemy2.y -= 10;
+      myEnemy2.width += 10;
+      myEnemy2.height += 10;
+    }else{
+      myEnemy2.x += 15;
+      myEnemy2.y -= 10;
+      myEnemy2.width += 10;
+      myEnemy2.height += 10;
+    }
+    }
+    else{
+      myEnemy2.x = 0;
+      myEnemy2.y = 0;
+      myEnemy2.height = 0;
+      myEnemy2.width = 0;
+      myEnemy2.knockback = false;
+    }
+    enemy2Frame--;
+  }
+  if (myEnemy3.knockback === true) {
+    if(enemy3Frame > 0){
+      if (myEnemy3.isLookingRight === true){
+      myEnemy3.x -= 25;
+      myEnemy3.y -= 10;
+      myEnemy3.width += 10;
+      myEnemy3.height += 10;
+    }else{
+      myEnemy3.x += 15;
+      myEnemy3.y -= 10;
+      myEnemy3.width += 10;
+      myEnemy3.height += 10;
+    }
+    }
+    else{
+      myEnemy3.x = 0;
+      myEnemy3.y = 0;
+      myEnemy3.height = 0;
+      myEnemy3.width = 0;
+      myEnemy3.knockback = false;
+    }
+    enemy3Frame--;
   }
   // if (ground === false){
   //   if (animationRunning === false && animation4Running === false && animation3Running === false && animation2Running === false){
