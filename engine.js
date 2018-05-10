@@ -17,7 +17,7 @@ function startGame() {
   myEnemy = new component(400 / 6, 400 / 6, "Slime2.png", 62, 390, "character", 4, 4);
   myEnemy2 = new component(400 / 6, 400 / 6, "Slime2.png", 750, 225, "character", 4, 4);
   myEnemy3 = new component(400 / 6, 400 / 6, "Slime2.png", 440, 65, "character", 4, 4);
-  myCharacterHitbox = new component(0, 0, "lightgreen", 0, 0, "hitbox");
+  myCharacterHitbox = new component(0, 0, "transparent", 0, 0, "hitbox");
   //180, 180
   //<!-- Game Bounds -->
   //<!-- Non-Passable Game Bounds -->
@@ -40,7 +40,7 @@ function startGame() {
   //<!-- Game initialization -->
   myGameArea.start();
 }
-
+var interval;
 var myGameArea = {
   canvas: document.createElement("canvas"),
   start: function() {
@@ -50,7 +50,8 @@ var myGameArea = {
     this.context = this.canvas.getContext("2d");
     document.body.prepend(this.canvas, document.body.childNodes[0]);
     //<!-- Frame Rate -->
-    this.interval = setInterval(updateGameArea, 16.67);
+    interval = setInterval(updateGameArea, 16.67);
+    this.pauseInterval = setInterval(pause, 16.67);
     //<!-- Key Listeners for canvas -->
     window.addEventListener('keydown', function(e) {
       myGameArea.keys = (myGameArea.keys || []);
@@ -60,6 +61,7 @@ var myGameArea = {
       myGameArea.keys[e.keyCode] = (e.type == "keydown");
     })
   },
+
   clear: function() {
     //<!-- Refresh canvas -->
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -182,7 +184,22 @@ function component(width, height, color, x, y, type, spriteRows, spriteCols) {
     return crash;
   }
 }
-
+function pause(){
+  if (myGameArea.keys && myGameArea.keys[80]) {
+    if(pauseHold === false){
+      if (togglePause === false){
+    mainPauseMenu.style.zIndex = "2";
+    clearInterval(interval);
+    togglePause = true;
+  }else {
+    interval = setInterval(updateGameArea, 16.67);
+    mainPauseMenu.style.zIndex = "-1";
+    togglePause = false;
+  }
+    }
+    pauseHold = true;
+  }else{pauseHold = false;}
+}
 var jumpSpeed = 0;
 var wait = 2;
 var jumpHold = 0;
@@ -212,10 +229,12 @@ var animationRunning = false;
 var animation2Running = false;
 var animation3Running = false;
 var animation4Running = false;
-var keyHold = false;
+var keyleft = false;
+var keyleft = false;
 var hitGround = false;
 var crouching = false;
-
+var togglePause = false;
+var pauseHold = false;
 function updateGameArea() {
 
 
@@ -284,7 +303,7 @@ function updateGameArea() {
   origin.speedY = -jumpSpeed;
   if (myGameArea.keys && myGameArea.keys[37]) {
     //direction = 2;
-    if (keyhold === false){
+    if (keyleft === false){
     if (animationRunning === false) {
       if (animation2Running === false && animation3Running === false){
       animationRow = 15;
@@ -303,16 +322,15 @@ function updateGameArea() {
         origin.speedX = 5;
       }
     }
-    keyhold = true;
+    keyleft = true;
   } else {
-    keyhold = false;
+    keyleft = false;
   }
   if (myGameArea.keys && myGameArea.keys[39]) {
     //direction = 3;
-    if (keyhold === false){
+    if (keyright === false){
     if (animationRunning === false) {
       if (animation2Running === false && animation3Running === false){
-
       animationRow = 4;
       animationColl = 5;
       myCharacter.currentRow = 4;
@@ -323,15 +341,15 @@ function updateGameArea() {
     }
     }
     }
+        keyright = true;
     //<!-- Right Wall Collision -->
     if (collisions[3] === false) {
       if (animationRunning === false) {
         origin.speedX = -5;
       }
     }
-    keyhold = true;
   } else {
-    keyhold = false;
+    keyright = false;
   }
   if (myGameArea.keys && myGameArea.keys[38]) {
     if (jumpHold < 3){
@@ -487,8 +505,23 @@ function updateGameArea() {
           }
           walkingRightFrame++;
           animationWait = 1;
-          if (walkingRightFrame > 20 && walkingRightFrame > 31) {
-
+          if (walkingRightFrame > 20 && walkingRightFrame < 31) {
+            myCharacterHitbox.x = 315;
+            myCharacterHitbox.y = 80;
+            myCharacterHitbox.width = 100;
+            myCharacterHitbox.height = 200;
+            if (walkingRightFrame > 25){
+              myCharacterHitbox.x = 405;
+              myCharacterHitbox.y = 90;
+              myCharacterHitbox.width = 185;
+              myCharacterHitbox.height = 190;
+            }
+          }
+          else{
+            myCharacterHitbox.x = 0;
+            myCharacterHitbox.y = 0;
+            myCharacterHitbox.width = 0;
+            myCharacterHitbox.height = 0;
           }
           if (walkingRightFrame === 53) {
             animationRunning = false;
@@ -649,6 +682,24 @@ function updateGameArea() {
           }
           walkingRightFrame++;
           animationWait = 1;
+          if (walkingRightFrame > 20 && walkingRightFrame < 31) {
+            myCharacterHitbox.x = 215;
+            myCharacterHitbox.y = 80;
+            myCharacterHitbox.width = 100;
+            myCharacterHitbox.height = 200;
+            if (walkingRightFrame > 25){
+              myCharacterHitbox.x = 30;
+              myCharacterHitbox.y = 90;
+              myCharacterHitbox.width = 185;
+              myCharacterHitbox.height = 190;
+            }
+          }
+          else{
+            myCharacterHitbox.x = 0;
+            myCharacterHitbox.y = 0;
+            myCharacterHitbox.width = 0;
+            myCharacterHitbox.height = 0;
+          }
           if (walkingRightFrame === 53) {
             animationRunning = false;
             walkingRightFrame = 0;
@@ -778,22 +829,20 @@ function updateGameArea() {
     direction = 0;
   }
 
-  myEnemy2.isLookingRight = false;
-  myEnemy3.isLookingRight = false;
   if (EanimationWait === 0) {
     if (myEnemy.knockback === false){
     myEnemy.currentRow = EanimationRow;
     myEnemy.currentColl = EanimationColl;
-    // if (myEnemy.x < 550 && myEnemy.isLookingRight === true) {
-    //   myEnemy.x += 10;
-    // } else {
-    //   myEnemy.isLookingRight = false;
-    // }
-    // if (myEnemy.x > 62 && myEnemy.isLookingRight === false) {
-    //   myEnemy.x -= 10;
-    // } else {
-    //   myEnemy.isLookingRight = true;
-    // }
+    if (myEnemy.x < origin.x + 850 && myEnemy.isLookingRight === true) {
+      myEnemy.x += 10;
+    } else {
+      myEnemy.isLookingRight = false;
+    }
+    if (myEnemy.x > origin.x + 42 && myEnemy.isLookingRight === false) {
+      myEnemy.x -= 10;
+    } else {
+      myEnemy.isLookingRight = true;
+    }
     EanimationColl++;
     if (EanimationColl === 4) {
       EanimationRow++;
@@ -815,16 +864,16 @@ function updateGameArea() {
     if (myEnemy2.knockback === false){
     myEnemy2.currentRow = E2animationRow;
     myEnemy2.currentColl = E2animationColl;
-    // if (myEnemy2.x < 550 && myEnemy2.isLookingRight === true) {
-    //   myEnemy2.x += 10;
-    // } else {
-    //   myEnemy2.isLookingRight = false;
-    // }
-    // if (myEnemy2.x > 62 && myEnemy2.isLookingRight === false) {
-    //   myEnemy2.x -= 10;
-    // } else {
-    //   myEnemy2.isLookingRight = true;
-    // }
+    if (myEnemy2.x < origin.x + 800 && myEnemy2.isLookingRight === true) {
+      myEnemy2.x += 10;
+    } else {
+      myEnemy2.isLookingRight = false;
+    }
+    if (myEnemy2.x > origin.x + 600 && myEnemy2.isLookingRight === false) {
+      myEnemy2.x -= 10;
+    } else {
+      myEnemy2.isLookingRight = true;
+    }
     E2animationColl++;
     if (E2animationColl === 4) {
       E2animationRow++;
@@ -846,16 +895,16 @@ function updateGameArea() {
     if (myEnemy3.knockback === false){
     myEnemy3.currentRow = E3animationRow;
     myEnemy3.currentColl = E3animationColl;
-    // if (myEnemy3.x < 550 && myEnemy3.isLookingRight === true) {
-    //   myEnemy3.x += 10;
-    // } else {
-    //   myEnemy3.isLookingRight = false;
-    // }
-    // if (myEnemy3.x > 62 && myEnemy3.isLookingRight === false) {
-    //   myEnemy3.x -= 10;
-    // } else {
-    //   myEnemy3.isLookingRight = true;
-    // }
+    if (myEnemy3.x < origin.x + 550 && myEnemy3.isLookingRight === true) {
+      myEnemy3.x += 10;
+    } else {
+      myEnemy3.isLookingRight = false;
+    }
+    if (myEnemy3.x > origin.x + 340 && myEnemy3.isLookingRight === false) {
+      myEnemy3.x -= 10;
+    } else {
+      myEnemy3.isLookingRight = true;
+    }
     E3animationColl++;
     if (E3animationColl === 4) {
       E3animationRow++;
